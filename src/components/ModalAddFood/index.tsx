@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useCallback, useRef } from 'react';
 import { FiCheckSquare } from 'react-icons/fi';
 
 import { Form } from './styles';
@@ -21,10 +21,13 @@ interface ModalFoodProps {
 export default function ModalAddFood({ isOpen, setIsOpen, handleAddFood}: ModalFoodProps) {
   const formRef = useRef(null);
 
-  const handleSubmit = async (data: AddFood) => {
-    handleAddFood(data);
-    setIsOpen();
-  };
+  const handleSubmit = useCallback(
+    async (data: AddFood) => {
+      handleAddFood(data);
+      setIsOpen();
+    },
+    [handleAddFood, setIsOpen],
+  );
 
     return (
       <Modal isOpen={isOpen} setIsOpen={setIsOpen}>

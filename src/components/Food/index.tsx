@@ -8,7 +8,7 @@ interface IFood {
   id: number;
   name: string;
   description: string;
-  price: number;
+  price: string;
   available: boolean;
   image: string;
 }
@@ -19,22 +19,34 @@ interface FoodProps {
   handleDelete: (id: number) => void;
 }
 
-export default function Food({ food, handleEditFood, handleDelete }: FoodProps) {
-  const { available } = food;
-  const [isAvailable, setIsAvailable] = useState(available)
+export default function Food ({ food, handleEditFood, handleDelete }: FoodProps) {
+  const [isAvailable, setIsAvailable] = useState(food.available)
 
-  const toggleAvailable = async () => {
+  const toggleAvailable = async (): Promise<void> => {
     await api.put(`/foods/${food.id}`, {
       ...food,
       available: !isAvailable,
-    });
+    })
 
     setIsAvailable(!isAvailable);
   }
 
+  // Outras formas de escrever o toggleAvailable:
+  
+
+  // async function toggleAvailable(): Promise<void> {
+  //   setIsAvailable(!isAvailable);
+  // }
+
+  // const toggleAvailable = async (): Promise<void> => {
+  //   handleEditFood({...food, available: !isAvailable })
+  //   setIsAvailable(!isAvailable)
+  // }
+
   const setEditingFood = () => {
     handleEditFood(food);
   }
+
     return (
       <Container available={isAvailable}>
         <header>
